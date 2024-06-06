@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Sessions {
+  id        Int       @id @default(autoincrement())
+  startTime DateTime  @default(now())
+  stopTime  DateTime?
+  average   Float?
+  points    Point[]
+}
+
+model Point {
+  id        Int      @id @default(autoincrement())
+  value     Int
+  time      DateTime
+  sessionId Int
+  sessions  Sessions @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}
